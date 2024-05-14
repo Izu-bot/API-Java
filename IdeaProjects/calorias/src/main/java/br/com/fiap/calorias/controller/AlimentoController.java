@@ -71,9 +71,10 @@ public class AlimentoController {
     }
 
 //    /api/alimentos?gorduras=???
-    @GetMapping(value = "/alimentos", params = "gorduras")
+    @GetMapping(value = "/alimentos", params = "gordura")
     @ResponseStatus(HttpStatus.OK)
-    public List<AlimentoExibicaoDto> buscarPorQtdGordurasInferior(@RequestParam Double valor, Pageable paginacao){
+    public List<AlimentoExibicaoDto> buscarGorudasMenores(@RequestParam("gordura") String strValor, Pageable paginacao){
+        Double valor = Double.parseDouble(strValor);
         return alimentoService.buscarPorQtdGordurasInferior(valor, paginacao);
     }
 }

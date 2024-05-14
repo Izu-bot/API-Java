@@ -17,6 +17,6 @@ public interface AlimentoRepository extends JpaRepository<Alimento, Long> {
     @Query("SELECT a FROM Alimento a WHERE nome LIKE CONCAT(:letra, '%')")
     List<Alimento> buscarPorInicial(@Param("letra") String letra, Pageable paginacao);
 
-    @Query("SELECT a FROM Alimento a WHERE quantidadeGorduras < :valor")
-    List<Alimento> buscarPorQtdGordurasInferior(@Param("valor") Double valor, Pageable painacao);
+    @Query("SELECT a FROM Alimento a WHERE quantidadeGorduras <= :valor")
+    List<Alimento> buscarPorQtdGordurasInferior(@Param("valor") Double valor, Pageable paginacao);
 }
