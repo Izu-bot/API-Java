@@ -1,7 +1,11 @@
 package br.com.fiap.calorias.controller;
 
+import br.com.fiap.calorias.config.security.TokenService;
+import br.com.fiap.calorias.dto.LoginDto;
+import br.com.fiap.calorias.dto.TokenDto;
 import br.com.fiap.calorias.dto.UsuarioCadastroDto;
 import br.com.fiap.calorias.dto.UsuarioExibicaoDto;
+import br.com.fiap.calorias.model.Usuario;
 import br.com.fiap.calorias.service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,17 +26,22 @@ public class AuthController {
     @Autowired
     private UsuarioService service;
 
+    @Autowired
+    private TokenService tokenService;
+
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Valid UsuarioCadastroDto usuarioCadastroDto){
+    public ResponseEntity login(@RequestBody @Valid LoginDto loginDto){
         UsernamePasswordAuthenticationToken usernamePassword =
                 new UsernamePasswordAuthenticationToken(
-                        usuarioCadastroDto.email(),
-                        usuarioCadastroDto.senha()
+                        loginDto.email(),
+                        loginDto.senha()
                 );
 
         Authentication auth = authenticationManager.authenticate(usernamePassword);
 
-        return ResponseEntity.ok().build();
+        String token = tokenService.gerarToken((Usuario) auth.getPrincipal());
+
+        return ResponseEntity.ok(new TokenDto(token));
     }
 
     @PostMapping("/register")

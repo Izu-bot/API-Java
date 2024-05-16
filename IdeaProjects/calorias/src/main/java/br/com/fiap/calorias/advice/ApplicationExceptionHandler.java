@@ -43,11 +43,21 @@ public class ApplicationExceptionHandler {
         return new ResponseEntity<>("Recurso não encontrado", HttpStatus.NOT_FOUND);
     }
 
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<String> integridadeDadosVioladosException(DataIntegrityViolationException err) {
         return new ResponseEntity<>(
-                "Ocorreu um erro na integridade dos dados, por favor, verifique se os dados estam sendo preenchidos corretamente.",
-                HttpStatus.INTERNAL_SERVER_ERROR);
+                "Ocorreu um erro na integridade de dados, por favor," +
+                        "verifique se os dados estam sendo preenchidos corretamente e se o usuário já não está cadastrado.",
+                HttpStatus.CONFLICT);
     }
+
+    // Solução do processor para DataIntegrityViolationException
+//    @ResponseStatus(HttpStatus.CONFLICT)
+//    @ExceptionHandler(DataIntegrityViolationException.class)
+//    public Map<String, String> manusearIntegridadeDados(){
+//        Map<String, String> mapaErro = new HashMap<>();
+//        mapaErro.put("Erro", "Usuário já cadastrado");
+//        return mapaErro;
+//    }
 }
